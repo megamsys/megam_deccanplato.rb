@@ -15,10 +15,11 @@ module Megam
     end
 
     # The body content needs to be a json.
-    def post_crm(json_string)
+    def post_crm(json_hash)
+      puts "==============>"+json_hash[:json]
       @options = {:path => '/provider/crm',
-      :body => json_string}.merge(@options)
-
+      :body => json_hash[:json]}.merge(@options)
+       
       request(
         :expects  => 200,
         :method   => :post,

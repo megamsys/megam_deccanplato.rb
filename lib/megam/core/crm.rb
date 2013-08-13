@@ -25,8 +25,8 @@ module Megam
     end
 
     def megam_rest
-      options = { :json => Megam::Config[:json]}
-      Megam::Deccanplato.new(options)
+      puts "megam_rest entry"     
+      Megam::Deccanplato.new
     end
 
     def json(arg=nil)
@@ -43,35 +43,42 @@ module Megam
 
     # Transform the ruby obj ->  to a Hash
     def to_hash
-      index_hash = Hash.new
-      index_hash["json_claz"] = self.class.name
-      index_hash["json"] = json      
+      puts "to_hash entry"
+      puts json
+      index_hash = Hash.new      
+      index_hash[:json] = json      
       index_hash
     end 
 
     def self.from_hash(o)
+      puts "self from_hash entry"
       acct = self.new()
       acct.from_hash(o)
       acct
     end
 
     def from_hash(o)
+      puts "from_hash entry"
       @json = o[:json] if o.has_key?(:json)     
       self
     end
 
     def self.create(o)
+      puts "self.create entry"
+      puts o
       acct = from_hash(o)
       acct.create
     end
 
     # Create the node via the REST API
     def create
-      megam_rest.post_crm(to_hash)
-      self
+      puts "crm create entry"
+      puts to_hash
+      megam_rest.post_crm(to_hash)      
     end
 
     def to_s
+      puts "to_s entry"
       Megam::Stuff.styled_hash(to_hash)
     #"---> Megam::Account:[error=#{error?}]\n"+
     end

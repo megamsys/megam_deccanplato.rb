@@ -55,6 +55,7 @@ module Megam
 
     # It is assumed that every API call will NOT use an API_KEY/email. 
     def initialize(options={})
+      puts "initiliaze entry"
       @options = OPTIONS.merge(options)  
     end
 
@@ -65,8 +66,11 @@ module Megam
         text.msg("> #{pkey}: #{pvalue}")
       end
 
+      
       begin
         response = connection.request(params, &block)
+        puts "=======response===="
+        puts response
       rescue Excon::Errors::HTTPStatusError => error
         klass = case error.response.status
 
@@ -82,7 +86,7 @@ module Megam
         reerror = klass.new(error.message, error.response)
         reerror.set_backtrace(error.backtrace)
         text.msg "#{text.color("#{reerror.response.body}", :white)}"
-        reerror.response.body = reerror.response.body.chomp
+        reerror.response.body = Megam::JSONCompat.from_json(reerror.response.body.chomp)
         text.msg("#{text.color("RESPONSE ERR: Ruby Object", :magenta, :bold)}")
         text.msg "#{text.color("#{reerror.response.body}", :white, :bold)}"
         raise(reerror)
@@ -106,7 +110,7 @@ module Megam
         text.msg "#{text.color("#{response.body}", :white)}"
 
         begin
-          response.body = response.body.chomp
+          #response.body = Megam::JSONCompat.from_json(response.body.chomp)
           text.msg("#{text.color("RESPONSE: Ruby Object", :magenta, :bold)}")
 
           text.msg "#{text.color("#{response.body}", :white, :bold)}"
@@ -120,17 +124,17 @@ module Megam
         end
       end
       text.msg "#{text.color("END(#{(Time.now - start).to_s}s)", :blue, :bold)}"
-      #  text.msg "#{text.color("END(#{(Megam::Stuff.time_ago(start))})", :blue, :bold)}"
+      # text.msg "#{text.color("END(#{(Megam::Stuff.time_ago(start))})", :blue, :bold)}"
 
       # reset (non-persistent) connection
       @connection.reset
-      response
+      response.body
     end
-
     private
 
     #Make a lazy connection.
     def connection
+      puts "path---"+API_VERSION1+ @options[:path]
       @options[:path] =API_VERSION1+ @options[:path]
       @options[:headers] = HEADERS.merge({
              'X-Megam-Date' =>  Time.now.strftime("%Y-%m-%d %H:%M")

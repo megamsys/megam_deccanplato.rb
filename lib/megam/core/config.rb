@@ -27,7 +27,7 @@ module Megam
 
     megam_deccanplato_server_url   "http://localhost:8080"
     
-    megam_deccanplato_version      "deccanplato"
+    megam_deccanplato_version      "/deccanplato"
 
     json nil
     

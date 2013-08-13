@@ -24,15 +24,7 @@ module Megam
 
     MEGAM_AUTH              = "Megam::Auth".freeze
     MEGAM_ERROR             = "Megam::Error".freeze
-    MEGAM_ACCOUNT           = "Megam::Account".freeze
-    MEGAM_NODE              = "Megam::Node".freeze
-    MEGAM_NODECOLLECTION    = "Megam::NodeCollection".freeze
-    MEGAM_PREDEF            = "Megam::Predef".freeze
-    MEGAM_PREDEFCOLLECTION  = "Megam::PredefCollection".freeze
-    MEGAM_PREDEFCLOUD       = "Megam::PredefCloud".freeze
-    MEGAM_PREDEFCLOUDCOLLECTION    = "Megam::PredefCloudCollection".freeze
-    MEGAM_CLOUDDEPLOYER     = "Megam::CloudDeployer".freeze
-    MEGAM_CLOUDDEPLOYERCOLLECTION    = "Megam::CloudDeployerCollection".freeze
+    MEGAM_CRM               = "Megam::Crm".freeze   
     class <<self
       # Increase the max nesting for JSON, which defaults
       # to 19, and isn't enough for some (for example, a Node within a Node)

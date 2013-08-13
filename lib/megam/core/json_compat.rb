@@ -106,27 +106,7 @@ module Megam
       def class_for_json_class(json_class)
         case json_class
         when MEGAM_ERROR
-          Megam::Error
-        when MEGAM_AUTH
-          Megam::Auth
-        when MEGAM_ACCOUNT
-          Megam::Account
-        when MEGAM_NODE
-          Megam::Node
-        when MEGAM_NODECOLLECTION
-          Megam::NodeCollection
-        when MEGAM_PREDEF
-          Megam::Predef
-        when MEGAM_PREDEFCOLLECTION
-          Megam::PredefCollection
-        when MEGAM_PREDEFCLOUD
-          Megam::PredefCloud
-        when MEGAM_PREDEFCLOUDCOLLECTION
-          Megam::PredefCloudCollection
-        when MEGAM_CLOUDDEPLOYER
-          Megam::CloudDeployer
-        when MEGAM_CLOUDDEPLOYERCOLLECTION
-          Megam::CloudDeployerCollection
+          Megam::Error        
         else
         raise JSON::ParserError, "Unsupported `json_class` type '#{json_class}'"
         end

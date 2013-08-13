@@ -13,12 +13,13 @@ end
 
 require "megam/deccanplato/errors"
 require "megam/deccanplato/version"
-require "megam/deccanplato/crm"
+require "megam/deccanplato/crms"
 require "megam/core/config"
 require "megam/core/stuff"
 require "megam/core/text"
 require "megam/core/json_compat"
-
+require "megam/core/crm"
+require "megam/core/error"
 
 module Megam
   class Deccanplato
@@ -42,7 +43,7 @@ module Megam
       :scheme => 'http'
     }
 
-    API_VERSION1 = "/v1"
+    API_VERSION1 = "/deccanplato"
 
     def text
       @text ||= Megam::Text.new(STDOUT, STDERR, STDIN, {})
@@ -81,7 +82,7 @@ module Megam
         reerror = klass.new(error.message, error.response)
         reerror.set_backtrace(error.backtrace)
         text.msg "#{text.color("#{reerror.response.body}", :white)}"
-        reerror.response.body = Megam::JSONCompat.from_json(reerror.response.body.chomp)
+        reerror.response.body = reerror.response.body.chomp
         text.msg("#{text.color("RESPONSE ERR: Ruby Object", :magenta, :bold)}")
         text.msg "#{text.color("#{reerror.response.body}", :white, :bold)}"
         raise(reerror)
@@ -105,7 +106,7 @@ module Megam
         text.msg "#{text.color("#{response.body}", :white)}"
 
         begin
-          response.body = Megam::JSONCompat.from_json(response.body.chomp)
+          response.body = response.body.chomp
           text.msg("#{text.color("RESPONSE: Ruby Object", :magenta, :bold)}")
 
           text.msg "#{text.color("#{response.body}", :white, :bold)}"

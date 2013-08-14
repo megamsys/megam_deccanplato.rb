@@ -1,4 +1,3 @@
-require "base64"
 require "time"
 require "excon"
 require "uri"
@@ -11,13 +10,12 @@ unless $LOAD_PATH.include?(__LIB_DIR__)
 $LOAD_PATH.unshift(__LIB_DIR__)
 end
 
-require "megam/deccanplato/errors"
 require "megam/deccanplato/version"
 require "megam/deccanplato/crms"
-require "megam/core/config"
+require "megam/api/errors"
+
 require "megam/core/stuff"
 require "megam/core/text"
-require "megam/core/json_compat"
 require "megam/core/crm"
 require "megam/core/error"
 
@@ -74,14 +72,14 @@ module Megam
       rescue Excon::Errors::HTTPStatusError => error
         klass = case error.response.status
 
-        when 401 then Megam::Deccanplato::Errors::Unauthorized
-        when 403 then Megam::Deccanplato::Errors::Forbidden
-        when 404 then Megam::Deccanplato::Errors::NotFound
-        when 408 then Megam::Deccanplato::Errors::Timeout
-        when 422 then Megam::Deccanplato::Errors::RequestFailed
-        when 423 then Megam::Deccanplato::Errors::Locked
-        when /50./ then Megam::Deccanplato::Errors::RequestFailed
-        else Megam::Deccanplato::Errors::ErrorWithResponse
+        when 401 then Megam::API::Errors::Unauthorized
+        when 403 then Megam::API::Errors::Forbidden
+        when 404 then Megam::API::Errors::NotFound
+        when 408 then Megam::API::Errors::Timeout
+        when 422 then Megam::API::Errors::RequestFailed
+        when 423 then Megam::API::Errors::Locked
+        when /50./ then Megam::API::Errors::RequestFailed
+        else Megam::API::Errors::ErrorWithResponse
         end
         reerror = klass.new(error.message, error.response)
         reerror.set_backtrace(error.backtrace)
@@ -116,11 +114,7 @@ module Megam
         rescue Exception => jsonerr
           text.error(jsonerr)
           raise(jsonerr)
-        # exception = Megam::JSONCompat.from_json(response_body)
-        # msg = "HTTP Request Returned #{response.code} #{response.message}: "
-        # msg << (exception["error"].respond_to?(:join) ? exception["error"].join(", ") : exception["error"].to_s)
-        # text.error(msg)
-        end
+         end
       end
       text.msg "#{text.color("END(#{(Time.now - start).to_s}s)", :blue, :bold)}"
       # reset (non-persistent) connection

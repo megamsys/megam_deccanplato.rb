@@ -25,20 +25,6 @@ module Megam
       configuration.inspect
     end
 
-    megam_deccanplato_server_url   "http://localhost:8080"
-    
-    megam_deccanplato_version      "/deccanplato"
-
-    json nil
-    
-
-    # Set these to enable SSL authentication / mutual-authentication
-    # with the server
-    ssl_client_cert nil
-    ssl_client_key nil
-    ssl_verify_mode :verify_none
-    ssl_ca_path nil
-    ssl_ca_file nil
 
   end
 end
